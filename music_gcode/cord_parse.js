@@ -3,7 +3,7 @@ if (Deno.args.length != 2) {
 	Deno.exit(1);
 }
 
-var note_len = 100;
+var note_len = 200;
 
 var file = Deno.readTextFileSync(Deno.args[0]);
 
@@ -80,19 +80,21 @@ function note_to_int(note) {
 }
 
 var notes_to_freq_table = [
+	[ 36485, 34437, 32505, 30680, 28958, 27333, 25799, 24351, 22984, 21694, 20477, 19327 ],
 	[ 18243, 17219, 16252, 15340, 14479, 13666, 12899, 12175, 11492, 10847, 10238, 9664 ],
 	[ 9121, 8609, 8126, 7670, 7240, 6833, 6450, 6088, 5746, 5424, 5119, 4832 ],
 	[ 4561, 4305, 4063, 3835, 3620, 3417, 3225, 3044, 2873, 2712, 2560, 2416 ],
 	[ 2280, 2152, 2032, 1918, 1810, 1708, 1612, 1522, 1437, 1356, 1280, 1208 ],
 	[ 1140, 1076, 1016, 959, 905, 854, 806, 761, 718, 678, 640, 604 ],
-	[ 570, 538, 508, 479, 452, 427, 403, 380, 359, 339, 320, 302 ],
-	[ 285, 269, 254, 240, 226, 214, 202, 190, 180, 170, 161, 153 ],
+	[ 570, 538, 508, 479, 452, 427, 403, 380, 359, 339, 320, 302 ]
 ];
+
+var freq_scale_factor = 4;
 
 var gcode = [];
 
 notes.forEach(function(note, index) {
-	gcode.push(`M42069 ${note.length} ${notes_to_freq_table[note.octave][note_to_int(note.note)]}`);
+	gcode.push(`M42069 ${note.length} ${Math.round(notes_to_freq_table[note.octave][note_to_int(note.note)] / freq_scale_factor)}`);
 	gcode.push(`G4 P${note.length + 50}`);
 });
 
