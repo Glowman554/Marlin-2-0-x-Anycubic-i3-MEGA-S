@@ -1192,6 +1192,8 @@ private:
   #endif
   // PATCH END: KNUTWURST
 
+  static void M42069();
+
   static void T(const int8_t tool_index);
 
 };
